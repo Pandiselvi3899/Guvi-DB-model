@@ -1,0 +1,125 @@
+DATABASE MODEL for GUVI ZEN CLASS
+
+
+
+use zen;
+
+
+
+CREATE DATABASE students;
+use students;
+
+// Courses
+
+CREATE TABLE courses(courseid INTEGER AUTO_INCREMENT PRIMARY KEY,coursename VARCHAR(100));
+
+INSERT INTO courses(coursename) VALUES("Node"),("Mongodb"),("Sql"),("JavaScript"),("ReactJS");
+
+-------------------------------
+
+// Mentors
+
+CREATE TABLE mentors(mentorid INTEGER AUTO_INCREMENT PRIMARY KEY,mentorname VARCHAR(100),mentoremail VARCHAR(100));
+
+
+INSERT INTO mentors(mentorname,mentoremail) VALUES ("selvi","selvi@gmail.com"),
+                                                   ("raj","raj@gmail.com"),
+                                                   ("hari","hari@gmail.com"),
+                                                   ("sneha","sneha@gmail.com"),
+                                                   ("mani","mani@gmail.com");
+                                                   
+-----------------------------------
+
+// Users
+
+CREATE TABLE users(userid INTEGER AUTO_INCREMENT PRIMARY KEY, username VARCHAR(100),useremail VARCHAR(100)
+,mentorid INTEGER, 
+FOREIGN KEY (mentorid) REFERENCES mentors(mentorid)
+);
+
+INSERT INTO users(username,useremail,mentorid) VALUES("prakash","prakash@gmail.com",2),
+                                                    ("raja","raja@gmail.com",1),
+                                                    ("harsu","harsu@gmail.com",5),
+                                                    ("raghul","raghul@gmail.com",3),
+                                                    ("sri","sri@gmail.com",4);
+
+
+
+--------------------------------------
+
+// Codekata
+
+CREATE TABLE codekata(codekataid INTEGER AUTO_INCREMENT PRIMARY KEY,userid INTEGER,number_of_problems INTEGER,
+ string_problems INTEGER,
+ FOREIGN KEY (userid) REFERENCES users(userid)
+ );
+ 
+ INSERT INTO codekata(number_of_problems,string_problems,userid) VALUES(20,10,1),
+                                                                       (30,15,2),
+                                                                       (25,10,3),
+                                                                       (50,30,4),
+                                                                       (80,60,5);
+-------------------------------------
+ 
+// Topics
+
+CREATE TABLE topics(topicsid INTEGER AUTO_INCREMENT PRIMARY KEY,courseid INTEGER, topic VARCHAR(200),
+FOREIGN KEY (courseid) REFERENCES courses(courseid)
+);
+
+INSERT INTO topics(topic,courseid) VALUES("HTML Basics",1),
+                                         ("Mongodb Basics",2),
+                                         ("Sql",3),
+                                         ("JavaScript Basics",4),
+                                         ("React Components",5);
+
+
+-------------------------------
+
+// Tasks
+
+CREATE TABLE tasks(tasksid INTEGER AUTO_INCREMENT PRIMARY KEY,courseid INTEGER,task VARCHAR(200),
+FOREIGN KEY (courseid) REFERENCES courses(courseid)
+);
+
+INSERT INTO tasks(task,courseid) VALUES ("Node Task",1),
+                                         ("Mongodb Task",2),
+                                         ("Bootstrap Task",3),
+                                         ("JavaScript Task",4),
+                                         ("React Task",5);
+--------------------------------------
+
+// Attendance
+
+CREATE TABLE attendance(attendanceid INTEGER AUTO_INCREMENT PRIMARY KEY, userid INTEGER,courseid INTEGER ,topicsid INTEGER, attended BOOLEAN,
+FOREIGN KEY (userid) REFERENCES users(userid),
+FOREIGN KEY (topicsid) REFERENCES topics(topicsid),
+FOREIGN KEY (courseid) REFERENCES courses(courseid)
+);
+INSERT INTO attendance(userid,courseid,topicsid,attended) VALUES(2,5,5,true),
+                                                                (5,1,1,true)
+                                                                (1,3,3,false)
+                                                                (3,4,4,ture)
+                                                                (4,2,2,true);
+
+----------------------
+
+// Company drivesid
+CREATE TABLE company_drives(drivesid INTEGER AUTO_INCREMENT PRIMARY KEY,userid INTEGER,company VARCHAR(100),
+FOREIGN KEY (userid) REFERENCES users(userid)
+);
+INSERT INTO company_drives(userid,company) VALUES (1,"Facebook"),
+                                                    (3,"Amazon")
+                                                    (5,"Tesla")
+                                                    (2,"Sony");
+                                                    (4,"Wipro")
+--------------------------
+
+// Students_activated_courses
+
+CREATE TABLE students_activated_courses(id INTEGER AUTO_INCREMENT PRIMARY KEY,userid INTEGER,courseid INTEGER,
+FOREIGN KEY (userid) REFERENCES users(userid),
+FOREIGN KEY (courseid) REFERENCES courses(courseid)
+);
+
+INSERT INTO students_activated_courses(userid,courseid) VALUES(1,1),(2,1),(3,5),(4,2),(5,3);
